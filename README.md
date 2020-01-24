@@ -10,9 +10,9 @@ Tecnologie:
 Funzionalità:
 -	Autenticazione tramite i principali OAuth provider, sfruttando la libreria PassportJS.
 -	All’utente autenticato viene permesso di:
-o	Votare le immagini, selezionando tra due proposte.
-o	Inserire nuove immagini. Queste verranno proposte ad un amministratore prima di venire inserite nel sistema di votazione.
-o	Vedere il proprio punteggio.
-o	Vedere una classifica di punteggi e la propria posizione in essa.
-o	Visualizzare le immagini più votate e meno votate. 
+    -	Votare le immagini, selezionando tra due proposte.
+    -	Inserire nuove immagini -> scatto foto. Queste verranno proposte ad un amministratore prima di venire inserite nel sistema di votazione.
+    -	Vedere il proprio punteggio.
+    -	Vedere una classifica di punteggi e la propria posizione in essa.
+    -	Visualizzare le immagini più votate e meno votate. 
 -	All’utente non autenticato viene permesso solo di visualizzare le immagini più votate e meno votate.

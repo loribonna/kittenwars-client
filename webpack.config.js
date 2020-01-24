@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
 	return {
@@ -12,14 +13,21 @@ module.exports = (env, argv) => {
 
 		resolve: {
 			// Add '.ts' and '.tsx' as resolvable extensions.
-			extensions: ['.ts', '.tsx', '.css', '.scss']
+			extensions: ['.js', '.ts', '.tsx', '.css', '.scss'],
+			//modules: ["src", "node_modules"]
 		},
 
-		entry: './RaspNodeConfig/static/RaspNodeConfig/react-nodes',
+		entry: './src/pages/index',
 		output: {
 			filename: '[name].js',
-			path: path.resolve(__dirname, 'static')
+			path: path.resolve(__dirname, 'dist')
 			//publicPath: "/static/"
+		},
+		devServer: {
+			contentBase: './dist',
+			host: 'localhost',
+			open: true,
+			port: 8000
 		},
 
 		module: {
@@ -58,10 +66,13 @@ module.exports = (env, argv) => {
 				filename: 'style.css'
 				//chunkFilename: '/static/[id].css',
 				// ignoreOrder: false // Enable to remove warnings about conflicting order
+			}),
+			new HtmlWebpackPlugin({
+				template: 'src/pages/index.html'
 			})
 		],
 		externals: {
-			react: 'React',
+			"react": 'React',
 			'react-dom': 'ReactDOM'
 		}
 	};
