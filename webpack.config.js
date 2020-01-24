@@ -24,7 +24,7 @@ module.exports = (env, argv) => {
 			//publicPath: "/static/"
 		},
 		devServer: {
-			contentBase: './dist',
+			contentBase: path.resolve(__dirname, 'dist'),
 			host: 'localhost',
 			open: true,
 			port: 8000
