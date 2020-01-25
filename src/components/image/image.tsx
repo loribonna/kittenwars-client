@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BASE_URI } from '../../helpers/statics';
+import { BASE_URI, KITTENS_URI } from '../../helpers/statics';
 import { getFile } from '../../helpers/crud';
 import './image.scss';
 
@@ -9,7 +9,6 @@ interface ImageDisplayProps {
 
 interface ImageDisplayState {}
 
-const KITTENS_URI = BASE_URI + '/kittens/';
 
 export class ImageDisplay extends React.Component<
 	ImageDisplayProps,
@@ -25,8 +24,8 @@ export class ImageDisplay extends React.Component<
 
 	render() {
 		return (
-			<div>
-				{<img className="image-container" src={this._imageUri} />}
+			<div className="image-container">
+				{<img className="image-img" src={this._imageUri} />}
 			</div>
 		);
 	}

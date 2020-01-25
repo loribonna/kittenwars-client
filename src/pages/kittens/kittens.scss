@@ -1,0 +1,18 @@
+$kittens-background: black;
+
+.kittens {
+	&-container {
+        background-color: $kittens-background;
+        align-items: center;
+	}
+
+	&-right {
+        flex: 1;
+        vertical-align: middle;
+	}
+
+	&-left {
+        flex: 1;
+        vertical-align: middle;
+	}
+}
