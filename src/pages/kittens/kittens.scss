@@ -2,17 +2,19 @@ $kittens-background: black;
 
 .kittens {
 	&-container {
-        background-color: $kittens-background;
-        align-items: center;
+		background-color: $kittens-background;
+                align-items: center;
 	}
 
 	&-right {
-        flex: 1;
-        vertical-align: middle;
-	}
+                display: block;
+                height: 100%;
+                flex: 1;
+        }
 
 	&-left {
-        flex: 1;
-        vertical-align: middle;
+                display: block;
+                height: auto;
+		flex: 1;
 	}
 }
