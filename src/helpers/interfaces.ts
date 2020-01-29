@@ -9,7 +9,8 @@ export interface IKitten {
 }
 
 export enum Pages {
-	KITTENS,
-	USER,
-	SCORE
+	"kittens",
+	"user",
+    "score",
+    "login"
 }

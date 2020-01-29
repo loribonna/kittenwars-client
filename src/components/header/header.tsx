@@ -22,25 +22,34 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 	render() {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				<a
-					className="navbar-brand"
-					href="#kittens"
-					onClick={() => this.setPage(Pages.KITTENS)}>
-					Kittens
-				</a>
+				<div className="mr-auto">
+					<a
+						className="navbar-brand"
+						href="/app/kittens"
+						onClick={() => this.setPage(Pages.kittens)}>
+						Kittens
+					</a>
+
+					<a
+						className="navbar-brand"
+						href="/app/score"
+						onClick={() => this.setPage(Pages.score)}>
+						Score
+					</a>
+
+					<a
+						className="navbar-brand"
+						href="/app/user"
+						onClick={() => this.setPage(Pages.user)}>
+						User
+					</a>
+				</div>
 
 				<a
-					className="navbar-brand"
-					href="#score"
-					onClick={() => this.setPage(Pages.SCORE)}>
-					Score
-				</a>
-
-				<a
-					className="navbar-brand"
-					href="#user"
-					onClick={() => this.setPage(Pages.USER)}>
-					User
+					className="navbar-brand "
+					href="/app/login"
+					onClick={() => this.setPage(Pages.login)}>
+					Login
 				</a>
 			</nav>
 		);

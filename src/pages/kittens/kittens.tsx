@@ -5,6 +5,7 @@ import { ImageDisplay } from '../../components/image/image';
 import { get, put } from '../../helpers/crud';
 import { VOTE_URI } from '../../helpers/statics';
 import { IKitten } from '../../helpers/interfaces';
+import { getJWTToken } from '../../helpers/helpers';
 
 interface KittensProps {}
 
@@ -32,7 +33,9 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 
 	async loadRandomKittens() {
 		try {
-			const kittens: IKitten[] = await get(VOTE_URI);
+			const token = getJWTToken();
+
+			const kittens: IKitten[] = await get(VOTE_URI, token);
 			if (Array.isArray(kittens) && kittens.length == 2) {
 				if (this._mounted) {
 					this.setState({
@@ -62,7 +65,9 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 				: this.state.rightKitten;
 
 		try {
-			const res = await put(VOTE_URI, votedKitten);
+			const token = localStorage.getItem('token');
+			
+			const res = await put(VOTE_URI, votedKitten, token as string);
 			await this.loadRandomKittens();
 			this._disableClick = false;
 		} catch (e) {

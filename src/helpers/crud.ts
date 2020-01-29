@@ -10,8 +10,18 @@ export const post = async (url: string, body: Object) => {
 	});
 };
 
-export const getFile = async (url: string) => {
-	return fetch(url).then(res => {
+export const getFile = async (url: string, JWTtoken?: string) => {
+	let headers;
+	if (JWTtoken) {
+		headers = {
+			Authorization: `Bearer ${JWTtoken}`
+		};
+	}
+
+	return fetch(url, {
+		method: 'GET',
+		headers: headers
+	}).then(res => {
 		if (!res.ok) {
 			throw 'Response error';
 		}
@@ -19,8 +29,20 @@ export const getFile = async (url: string) => {
 	});
 };
 
-export const get = async (url: string) => {
-	return fetch(url).then(res => {
+export const get = async (url: string, JWTtoken?: string) => {
+	let headers;
+	if (JWTtoken) {
+		headers = {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${JWTtoken}`
+		};
+	}
+
+	return fetch(url, {
+		method: 'GET',
+		headers: headers
+	}).then(res => {
 		if (!res.ok) {
 			throw 'Response error';
 		}
@@ -28,13 +50,22 @@ export const get = async (url: string) => {
 	});
 };
 
-export const put = async (url: string, body: Object) => {
+export const put = async (url: string, body: Object, JWTtoken?: string) => {
+	let headers: any = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json'
+	};
+	if (JWTtoken) {
+		headers = {
+			...headers,
+			Authorization: `Bearer ${JWTtoken}`
+		};
+	}
+
 	return fetch(url, {
 		method: 'PUT',
 		body: body ? JSON.stringify(body) : null,
-		headers: {
-			'Content-Type': 'application/json'
-		}
+		headers: headers
 	}).then(async res => {
 		if (!res.ok) {
 			throw { err: 'Response error', data: await res.json() };
