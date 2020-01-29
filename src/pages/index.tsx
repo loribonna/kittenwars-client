@@ -13,6 +13,7 @@ import {
 	useHistory,
 	useParams
   } from "react-router-dom";
+import { Score } from './score/score';
 
 interface AppProps {}
 
@@ -61,6 +62,9 @@ class App extends React.Component<AppProps, AppState> {
 						</Route>
 						<Route path="/app/login">
 							<Login></Login>
+						</Route>
+						<Route path="/app/score">
+							<Score></Score>
 						</Route>
 
 					</Switch>

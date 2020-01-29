@@ -6,7 +6,7 @@ import { getJWTToken } from '../../helpers/helpers';
 
 interface ImageDisplayProps {
 	imageID: String;
-	onClick: Function;
+	onClick?: Function;
 }
 
 interface ImageDisplayState {
@@ -30,7 +30,9 @@ export class ImageDisplay extends React.Component<
 	}
 
 	imageClick(event) {
-		this.props.onClick(this.props.imageID);
+		if(this.props.onClick){
+			this.props.onClick(this.props.imageID);
+		}
 	}
 
 	async componentDidMount() {
