@@ -4,7 +4,7 @@ export const post = async (url: string, body: Object) => {
 		body: JSON.stringify(body)
 	}).then(res => {
 		if (!res.ok) {
-			throw 'Response error';
+			throw { status: res.status };
 		}
 		return res.json();
 	});
@@ -23,7 +23,7 @@ export const getFile = async (url: string, JWTtoken?: string) => {
 		headers: headers
 	}).then(res => {
 		if (!res.ok) {
-			throw 'Response error';
+			throw { status: res.status };
 		}
 		return res.text();
 	});
@@ -44,7 +44,7 @@ export const get = async (url: string, JWTtoken?: string) => {
 		headers: headers
 	}).then(res => {
 		if (!res.ok) {
-			throw 'Response error';
+			throw { status: res.status };
 		}
 		return res.json();
 	});
@@ -68,7 +68,7 @@ export const put = async (url: string, body: Object, JWTtoken?: string) => {
 		headers: headers
 	}).then(async res => {
 		if (!res.ok) {
-			throw { err: 'Response error', data: await res.json() };
+			throw { status: res.status, data: await res.json() };
 		}
 		return res.json();
 	});
@@ -77,7 +77,7 @@ export const put = async (url: string, body: Object, JWTtoken?: string) => {
 export const del = async (url: string) => {
 	return fetch(url, { method: 'DELETE' }).then(res => {
 		if (!res.ok) {
-			throw 'Response error';
+			throw { status: res.status };
 		}
 
 		return res.statusText === 'No Content' ? null : res.json();
