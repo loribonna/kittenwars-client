@@ -49,7 +49,7 @@ export class ImageDisplay extends React.Component<
 	async componentDidUpdate() {
 		if (this.state.imageID != this.props.imageID) {
 			if(this._mounted){
-				this.setState({ imageID: this.props.imageID });
+				this.setState({ ...this.state, imageID: this.props.imageID });
 			}
 			await this.loadImage();
 		}
@@ -81,6 +81,7 @@ export class ImageDisplay extends React.Component<
 			<div className="image-container">
 				{
 					<img
+						key={this.state.imageID as string}
 						className="image-img"
 						src={this.getImg()}
 						onClick={this.imageClick.bind(this)}

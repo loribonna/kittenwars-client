@@ -8,32 +8,17 @@ import { ImageDisplay } from '../../components/image/image';
 interface ScoreProps {}
 
 interface ScoreState {
-	userScore: Number;
 	kittens: IKitten[];
 }
 
 export class Score extends React.Component<ScoreProps, ScoreState> {
 	constructor(props) {
 		super(props);
-		this.state = { userScore: 0, kittens: [] };
+		this.state = { kittens: [] };
 	}
 
 	async componentDidMount() {
-		await this.loadUserScore();
 		await this.loadMostLikedKitten();
-	}
-
-	async loadUserScore() {
-		try {
-			const token = getJWTToken();
-
-			const score = await get('/score/user', token);
-			this.setState({ ...this.state, userScore: score });
-		} catch (e) {
-			if (e.status === 401) {
-				redirectToLogin();
-			}
-		}
 	}
 
 	async loadMostLikedKitten() {
@@ -52,7 +37,6 @@ export class Score extends React.Component<ScoreProps, ScoreState> {
 	render() {
 		return (
 			<div>
-				USER SCORE {this.state.userScore} <br />
 				{this.state.kittens && this.state.kittens.length > 0 && (
 					<div>
 						KITTEN WITH {this.state.kittens[0].votes} VOTES

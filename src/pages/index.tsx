@@ -14,6 +14,7 @@ import {
 	useParams
   } from "react-router-dom";
 import { Score } from './score/score';
+import { User } from './user/user';
 
 interface AppProps {}
 
@@ -65,6 +66,9 @@ class App extends React.Component<AppProps, AppState> {
 						</Route>
 						<Route path="/app/score">
 							<Score></Score>
+						</Route>
+						<Route path="/app/user">
+							<User></User>
 						</Route>
 
 					</Switch>
