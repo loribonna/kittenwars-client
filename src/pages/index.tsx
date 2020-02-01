@@ -12,51 +12,46 @@ import {
 	Link,
 	useHistory,
 	useParams
-  } from "react-router-dom";
+} from 'react-router-dom';
 import { Score } from './score/score';
 import { User } from './user/user';
+import { get } from '../helpers/crud';
+import { redirectToLogin } from '../helpers/helpers';
+import { Logout } from '../components/logout/logout';
+import { JWTController } from '../components/jwt/jwt.token';
 
 interface AppProps {}
 
 interface AppState {
-	currentPage: Pages;
 	logged: Boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
 	constructor(props) {
 		super(props);
-		this.state = { currentPage: Pages.kittens, logged: false };
-	}
-
-	componentDidMount() {
-		const hash = this.getRouteHash();
-		if (!hash) {
-			return;
-		}
-		const page: any = Pages[hash];
-		this.setState({ ...this.state, currentPage: page });
-	}
-
-	setPage(page: Pages) {
-		this.setState({ ...this.state, currentPage: page });
+		this.state = { logged: false };
 	}
 
 	getRouteHash() {
 		return window.location.hash.substring(1);
 	}
 
+	checkAuth(valid) {
+		this.setState({ ...this.state, logged: valid });
+	}
+
 	render() {
 		return (
 			<div>
 				<Router>
-					<Header
-						currentPage={this.state.currentPage}
-						setPage={this.setPage.bind(this)}></Header>
+					<Header logged={this.state.logged}></Header>
 
 					<Switch>
 						<Route path="/app/jwt/:token">
-							<JWTController></JWTController>
+							<JWTController
+								checkAuth={this.checkAuth.bind(
+									this
+								)}></JWTController>
 						</Route>
 						<Route path="/app/kittens">
 							<Kittens></Kittens>
@@ -64,26 +59,20 @@ class App extends React.Component<AppProps, AppState> {
 						<Route path="/app/login">
 							<Login></Login>
 						</Route>
+						<Route path="/app/logout">
+							<Logout></Logout>
+						</Route>
 						<Route path="/app/score">
 							<Score></Score>
 						</Route>
 						<Route path="/app/user">
 							<User></User>
 						</Route>
-
 					</Switch>
 				</Router>
 			</div>
 		);
 	}
-}
-
-const JWTController: any = () => {
-	const history = useHistory();
-	const params = useParams();
-	localStorage.setItem('token', (params as any).token);
-	history.push('/app/kittens');
-	return "";
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -25,5 +25,6 @@ export enum Pages {
 	"kittens",
 	"user",
     "score",
-    "login"
+	"login",
+	"logout"
 }
