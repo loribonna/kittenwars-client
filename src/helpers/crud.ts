@@ -1,7 +1,17 @@
-export const post = async (url: string, body: Object) => {
+export const post = async (url: string, body: FormData, JWTtoken?: string) => {
+	let headers: any = {
+	};
+	if (JWTtoken) {
+		headers = {
+			...headers,
+			Authorization: `Bearer ${JWTtoken}`
+		};
+	}
+
 	return fetch(url, {
 		method: 'POST',
-		body: JSON.stringify(body)
+		body: body,
+		headers: headers
 	}).then(res => {
 		if (!res.ok) {
 			throw { status: res.status };

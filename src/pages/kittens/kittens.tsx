@@ -6,6 +6,7 @@ import { get, put } from '../../helpers/crud';
 import { VOTE_URI } from '../../helpers/statics';
 import { IKitten } from '../../helpers/interfaces';
 import { getJWTToken, redirectToLogin } from '../../helpers/helpers';
+import { KittenVoteDto } from '../../helpers/dto/kitten-vote.dto';
 
 interface KittensProps {}
 
@@ -73,6 +74,9 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 			kittenA: this.state.leftKitten._id,
 			kittenB: this.state.rightKitten._id
 		};
+
+		const dto = new KittenVoteDto(vote);
+		await dto.validateOrReject();
 
 		try {
 			const token = getJWTToken();
