@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
+import { LOGOUT_URI } from '../../helpers/statics';
 
 interface LogoutProps {}
 
 export const Logout: React.FunctionComponent<LogoutProps> = () => {
-	const history = useHistory();
-    history.push('/auth/logout');
-
+	localStorage.removeItem('token');
+	location.href = LOGOUT_URI;
 	return <div />;
 };

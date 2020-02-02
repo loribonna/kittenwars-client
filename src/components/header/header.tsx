@@ -2,8 +2,9 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import './header.scss';
 import { Pages } from '../../helpers/interfaces';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-interface HeaderProps {
+interface HeaderProps extends RouteComponentProps {
 	logged: Boolean;
 }
 
@@ -11,7 +12,7 @@ interface HeaderState {
 	logged: Boolean;
 }
 
-export class Header extends React.Component<HeaderProps, HeaderState> {
+class Header extends React.Component<HeaderProps, HeaderState> {
 	constructor(props) {
 		super(props);
 		this.state = { logged: false };
@@ -23,34 +24,80 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 		}
 	}
 
+	onNavClick(page) {
+		this.props.history.push(page);
+	}
+
 	render() {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				<div className="mr-auto">
-					<a className="navbar-brand" href="/app/kittens">
-						Kittens
-					</a>
-
-					<a className="navbar-brand" href="/app/score">
-						Score
-					</a>
-
-					<a className="navbar-brand" href="/app/user">
-						User
-					</a>
-				</div>
-
-				{!this.state.logged && (
-					<a className="navbar-brand " href="/app/login">
-						Login
-					</a>
-				)}
+			<div>
 				{this.state.logged && (
-					<a className="navbar-brand " href="/app/logout">
-						Logout
-					</a>
+					<nav className="navbar navbar-expand-lg navbar-light bg-light">
+						<div className="mr-auto">
+							<a
+								className="navbar-brand"
+								href="#"
+								onClick={() =>
+									this.onNavClick.apply(this, [
+										'/app/kittens'
+									])
+								}>
+								Kittens
+							</a>
+
+							<a
+								className="navbar-brand"
+								href="#"
+								onClick={() =>
+									this.onNavClick.apply(this, ['/app/score'])
+								}>
+								Score
+							</a>
+
+							<a
+								className="navbar-brand"
+								href="#"
+								onClick={() =>
+									this.onNavClick.apply(this, ['/app/user'])
+								}>
+								User
+							</a>
+						</div>
+						<a
+							className="navbar-brand"
+							href="#"
+							onClick={() =>
+								this.onNavClick.apply(this, ['/app/logout'])
+							}>
+							Logout
+						</a>
+					</nav>
 				)}
-			</nav>
+				{!this.state.logged && (
+					<nav className="navbar navbar-expand-lg navbar-light bg-light">
+						<div className="mr-auto">
+							<a
+								className="navbar-brand"
+								href="#"
+								onClick={() =>
+									this.onNavClick.apply(this, ['/app/score'])
+								}>
+								Score
+							</a>
+						</div>
+						<a
+							className="navbar-brand"
+							href="#"
+							onClick={() =>
+								this.onNavClick.apply(this, ['/app/login'])
+							}>
+							Login
+						</a>
+					</nav>
+				)}
+			</div>
 		);
 	}
 }
+
+export default withRouter(Header);

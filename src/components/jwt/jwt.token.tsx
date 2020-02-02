@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { get } from '../../helpers/crud';
-import { redirectToLogin } from '../../helpers/helpers';
+import { redirectToLogin, redirectToDefault } from '../../helpers/helpers';
 
 interface JWTProps {
 	checkAuth: Function;
@@ -22,7 +22,7 @@ export const JWTController: React.FunctionComponent<JWTProps> = props => {
 		} catch (e) {
 			props.checkAuth(false);
 			if (e.status === 401) {
-				redirectToLogin();
+				redirectToDefault();
 			}
 		}
 	};

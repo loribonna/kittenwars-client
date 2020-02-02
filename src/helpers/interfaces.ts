@@ -4,7 +4,7 @@ export interface IKitten {
 	age?: Number;
 	insertDate?: Date;
     originalName: String
-    savedName: String;
+    savedName: string;
     size: Number;
     votes: Number;
     approved: Boolean;

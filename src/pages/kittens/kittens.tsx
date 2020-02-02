@@ -5,7 +5,7 @@ import { ImageDisplay } from '../../components/image/image';
 import { get, put } from '../../helpers/crud';
 import { VOTE_URI } from '../../helpers/statics';
 import { IKitten } from '../../helpers/interfaces';
-import { getJWTToken, redirectToLogin } from '../../helpers/helpers';
+import { getJWTToken, redirectToLogin, redirectToDefault } from '../../helpers/helpers';
 import { KittenVoteDto } from '../../helpers/dto/kitten-vote.dto';
 
 interface KittensProps {}
@@ -49,7 +49,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 			}
 		} catch (e) {
 			if (e.status === 401) {
-				redirectToLogin();
+				redirectToDefault();
 			}
 		}
 	}
