@@ -136,7 +136,6 @@ export class User extends React.Component<UserProps, UserState> {
 					<input
 						type="file"
 						name="image"
-						//ref={ref => this.fileUpload}
 						onChange={this.onFileChange.bind(this)}
 					/>
 					<br />
