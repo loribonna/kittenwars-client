@@ -16,6 +16,7 @@ interface AdminState {
 function KittenElement(kitten: IKitten) {
 	return (
 		<ul className="admin-kitten-element">
+			<li>Kitten name: {kitten.name}</li>
 			<li>Original Name: {kitten.originalName}</li>
 			<li>Saved Name: {kitten.savedName}</li>
 			<li>
@@ -64,7 +65,7 @@ export class Admin extends React.Component<AdminProps, AdminState> {
 			const dto = new KittenEvaluateDto({
 				kittenId: kitten._id,
 				accepted: accepted
-            });
+			});
 
 			try {
 				await dto.validateOrReject();
@@ -87,17 +88,24 @@ export class Admin extends React.Component<AdminProps, AdminState> {
 						return (
 							<li key={index}>
 								{KittenElement(kitten)}
-								<ImageDisplay key={kitten.savedName}
+								<ImageDisplay
+									key={kitten.savedName}
 									imageID={kitten.savedName}></ImageDisplay>
 								<button
 									onClick={async () =>
-										await this.evaluateKitten(kitten, index)(true)
+										await this.evaluateKitten(
+											kitten,
+											index
+										)(true)
 									}>
 									ACCEPT
 								</button>{' '}
 								<button
 									onClick={async () =>
-										await this.evaluateKitten(kitten, index)(false)
+										await this.evaluateKitten(
+											kitten,
+											index
+										)(false)
 									}>
 									DELETE
 								</button>

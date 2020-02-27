@@ -5,6 +5,9 @@ import { get, post } from '../../helpers/crud';
 import { IUser, IKitten } from '../../helpers/interfaces';
 import { validate } from 'class-validator';
 import { CreateImageDto } from '../../helpers/dto/create-image.dto';
+import { Input } from '../../components/input/input';
+import { SubjectData } from '../../helpers/types';
+import { CreateKittenDto } from '../../helpers/dto/create-kitten.dto';
 
 interface UserProps {}
 
@@ -14,6 +17,7 @@ interface UserState {
 	userPosition: Number;
 	fileUpl?: File;
 	fileOk?: boolean;
+	kitten: Partial<IKitten>;
 }
 
 function UserElement(user: IUser) {
@@ -32,7 +36,8 @@ export class User extends React.Component<UserProps, UserState> {
 			fileUpl: undefined,
 			userScore: 0,
 			scoreBoard: [],
-			userPosition: -1
+			userPosition: -1,
+			kitten: {}
 		};
 	}
 
@@ -90,13 +95,19 @@ export class User extends React.Component<UserProps, UserState> {
 			return;
 		}
 		try {
+			const imageDto = new CreateImageDto(this.state.fileUpl);
+			const kittenDto = new CreateKittenDto(this.state.kitten);
+
+			await Promise.all([
+				imageDto.validateOrReject(),
+				kittenDto.validateOrReject()
+			]);
+
 			const token = getJWTToken();
 
 			const formData = new FormData();
 			formData.append('image', this.state.fileUpl);
-
-			const dto = new CreateImageDto(this.state.fileUpl);
-			await dto.validateOrReject();
+			formData.append('kitten', JSON.stringify(this.state.kitten));
 
 			const insertedKitten: IKitten = await post(
 				'/kittens',
@@ -126,6 +137,12 @@ export class User extends React.Component<UserProps, UserState> {
 		}
 	}
 
+	updateData(data: SubjectData) {
+		this.setState({
+			kitten: { ...this.state.kitten, [data.name]: data.value }
+		});
+	}
+
 	render() {
 		return (
 			<div>
@@ -139,6 +156,12 @@ export class User extends React.Component<UserProps, UserState> {
 						onChange={this.onFileChange.bind(this)}
 					/>
 					<br />
+					<Input
+						label="Kitten name"
+						name="name"
+						value={this.state.kitten.name?.toString()}
+						onChange={data => this.updateData(data)}
+					/>
 					<input type="submit" value="INSERT KITTEN" />
 					<br />
 					{this.state.fileOk != null &&
