@@ -139,6 +139,7 @@ export class User extends React.Component<UserProps, UserState> {
 
 	updateData(data: SubjectData) {
 		this.setState({
+			...this.state,
 			kitten: { ...this.state.kitten, [data.name]: data.value }
 		});
 	}
