@@ -1,5 +1,14 @@
-.score-image-container{
-    display: block;
-    max-width: 50%;
-    height: auto;
+.score {
+	@media (min-width: 700px) {
+		&-container {
+			display: flex;
+			flex-direction: row;
+		}
+	}
+
+	&-image-container {
+        display: block;
+        align-items: center;
+		height: auto;
+	}
 }

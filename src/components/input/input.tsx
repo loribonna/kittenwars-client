@@ -5,13 +5,15 @@ interface TextInputProps {
 	value?: string;
 	name: string;
 	onChange: Function;
+	disabled?: boolean;
+	error?: boolean;
 }
 
 interface TextInputState {
 	value: string;
 }
 
-export class Input extends React.Component<TextInputProps, TextInputState> {
+export class TextInput extends React.Component<TextInputProps, TextInputState> {
 	_nodeid;
 	_isMounted = false;
 
@@ -47,10 +49,12 @@ export class Input extends React.Component<TextInputProps, TextInputState> {
 					</label>
 				)}
 				<input
+					disabled={this.props.disabled}
 					type="text"
 					value={this.state.value}
 					onChange={this.handleChange.bind(this)}
 				/>
+				{this.props.error && <div style={{color:"red"}}>INPUT ERROR</div>}
 			</div>
 		);
 	}

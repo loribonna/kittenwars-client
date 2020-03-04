@@ -5,7 +5,11 @@ import { ImageDisplay } from '../../components/image/image';
 import { get, put } from '../../helpers/crud';
 import { VOTE_URI } from '../../helpers/statics';
 import { IKitten } from '../../helpers/interfaces';
-import { getJWTToken, redirectToLogin, redirectToDefault } from '../../helpers/helpers';
+import {
+	getJWTToken,
+	redirectToLogin,
+	redirectToDefault
+} from '../../helpers/helpers';
 import { KittenVoteDto } from '../../helpers/dto/kitten-vote.dto';
 
 interface KittensProps {}
@@ -14,6 +18,7 @@ interface KittensState {
 	leftKitten?: IKitten;
 	rightKitten?: IKitten;
 	win?: boolean;
+	loading: boolean;
 }
 
 export class Kittens extends React.Component<KittensProps, KittensState> {
@@ -21,7 +26,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 	_disableClick = false;
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { loading: true };
 	}
 
 	async componentDidMount() {
@@ -35,6 +40,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 
 	async loadRandomKittens() {
 		try {
+			this.setState({ ...this.state, loading: true });
 			const token = getJWTToken();
 
 			const kittens: IKitten[] = await get(VOTE_URI, token);
@@ -43,7 +49,8 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 					this.setState({
 						...this.state,
 						leftKitten: kittens[0],
-						rightKitten: kittens[1]
+						rightKitten: kittens[1],
+						loading: false
 					});
 				}
 			}
@@ -94,9 +101,15 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 	}
 
 	render() {
+		if (this.state.loading) {
+			return <div>Loading Kittens...</div>;
+		}else if(!this.state.leftKitten &&!this.state.rightKitten){
+			return <div>Not enough Kittens to War!. INSERT A KITTEN</div>
+		}
+		
 		return (
 			<div>
-				<div className="row flex-column-reverse flex-md-row kittens-container">
+				<div className="kittens-container">
 					<div className="kittens-left">
 						{this.state.leftKitten && (
 							<ImageDisplay
@@ -118,12 +131,9 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 						)}
 					</div>
 				</div>
-				{this.state.win!=null&&this.state.win&&(
-					"WIN"
-				)}
-				{this.state.win!=null&&!this.state.win&&(
-					"LOSE"
-				)}
+
+				{this.state.win != null && this.state.win && 'WIN'}
+				{this.state.win != null && !this.state.win && 'LOSE'}
 			</div>
 		);
 	}

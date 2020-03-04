@@ -53,7 +53,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
 	renderLoggedUser(): JSX.Element {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg navbar-light custom-header">
 				<div className="mr-auto">
 					<a
 						className="navbar-brand"
@@ -104,7 +104,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
 	renderUnloggedUser(): JSX.Element {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg navbar-light custom-header">
 				<div className="mr-auto">
 					<a
 						className="navbar-brand"
