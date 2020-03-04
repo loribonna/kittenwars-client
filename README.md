@@ -1,68 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# KITTENWARS
 
-## Available Scripts
+Client web per l'applicativo web e mobile di Kittenwars.
 
-In the project directory, you can run:
+-   Prima installazione: `npm install`
+-   Compilazione: `npm run build`
 
-### `npm start`
+L'applicativo usa TypeScript come linguaggio principale e Webpack per compiare il tutto in un unico file `main.js`. 
+I file compilati sono presenti nella cartella `dist`.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Per eseguire l'applicativo, copiare i file dalla cartella `dist` alla cartella `statics` del [server web](https://github.com/loribonna/kittenwars-server).
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Test:
 
-### `npm test`
+-   `npm run test`
+-   La maggior parte dei componenti effettuano operazioni CRUD basiche. L'unico test effettuato si trova in `dto.spec.ts` per verificare il funzionamento dei DTO.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Traccia concordata
 
-### `npm run build`
+Tecnologie:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-   Backend realizzato tramite il framework NestJS. Questa scelta è motivata dal fatto che ho già utilizzato Django per una tesina progettuale, per cui vorrei utilizzare un framework diverso.
+-   App mobile realizzata tramite React Native.
+-   Interfaccia Web realizzata tramite React. Gli utenti amministratori avranno funzionalità avanzate tramite questa.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Funzionalità:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+-   Autenticazione tramite i principali OAuth provider, sfruttando la libreria PassportJS.
+-   All’utente autenticato viene permesso di:
+-   Votare le immagini, selezionando tra due proposte.
+-   Inserire nuove immagini -> scatto foto. Queste verranno proposte ad un amministratore prima di venire inserite nel sistema di votazione.
+-   Vedere il proprio punteggio.
+-   Vedere una classifica di punteggi e la propria posizione in essa.
+-   Visualizzare le immagini più votate e meno votate.
+-   All’utente non autenticato viene permesso solo di visualizzare le immagini più votate e meno votate.
