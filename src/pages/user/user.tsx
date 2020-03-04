@@ -5,7 +5,7 @@ import { get, post } from '../../helpers/crud';
 import { IUser, IKitten } from '../../helpers/interfaces';
 import { validate } from 'class-validator';
 import { CreateImageDto } from '../../helpers/dto/create-image.dto';
-import { Input } from '../../components/input/input';
+import { TextInput } from '../../components/input/input';
 import { SubjectData } from '../../helpers/types';
 import { CreateKittenDto } from '../../helpers/dto/create-kitten.dto';
 
@@ -18,6 +18,8 @@ interface UserState {
 	fileUpl?: File;
 	fileOk?: boolean;
 	kitten: Partial<IKitten>;
+	upload: boolean;
+	inputError: boolean;
 }
 
 function UserElement(user: IUser) {
@@ -33,11 +35,13 @@ export class User extends React.Component<UserProps, UserState> {
 	constructor(props) {
 		super(props);
 		this.state = {
+			inputError: false,
 			fileUpl: undefined,
 			userScore: 0,
 			scoreBoard: [],
 			userPosition: -1,
-			kitten: {}
+			kitten: {},
+			upload: false
 		};
 	}
 
@@ -94,29 +98,36 @@ export class User extends React.Component<UserProps, UserState> {
 		if (!this.state.fileUpl) {
 			return;
 		}
-		try {
-			const imageDto = new CreateImageDto(this.state.fileUpl);
-			const kittenDto = new CreateKittenDto(this.state.kitten);
 
+		this.setState({ ...this.state, upload: true, inputError: false });
+		const imageDto = new CreateImageDto(this.state.fileUpl);
+		const kittenDto = new CreateKittenDto(this.state.kitten);
+
+		try {
 			await Promise.all([
 				imageDto.validateOrReject(),
 				kittenDto.validateOrReject()
 			]);
+		} catch (e) {
+			this.setState({ ...this.state, inputError: true, upload: false });
+		}
 
+		try {
 			const token = getJWTToken();
 
 			const formData = new FormData();
 			formData.append('image', this.state.fileUpl);
 			formData.append('kitten', JSON.stringify(this.state.kitten));
 
-			const insertedKitten: IKitten = await post(
-				'/kittens',
-				formData,
-				token
-			);
-			this.setState({ ...this.state, fileUpl: undefined, fileOk: true });
+			await post('/kittens', formData, token);
+			this.setState({
+				...this.state,
+				fileUpl: undefined,
+				fileOk: true,
+				upload: false
+			});
 		} catch (e) {
-			this.setState({ ...this.state, fileOk: false });
+			this.setState({ ...this.state, fileOk: false, upload: false });
 
 			if (e.status === 401) {
 				redirectToLogin();
@@ -145,43 +156,55 @@ export class User extends React.Component<UserProps, UserState> {
 	}
 
 	render() {
+		if (this.state.upload) {
+			return <div>Uploading File... Please wait</div>;
+		}
 		return (
-			<div>
-				<form
-					encType="multipart/form-data"
-					onSubmit={this.insertNewKitten.bind(this)}>
-					file input:{' '}
-					<input
-						type="file"
-						name="image"
-						onChange={this.onFileChange.bind(this)}
-					/>
+			<div style={{ display: 'flex', flexDirection: 'row' }}>
+				<div>
+					USER SCORE {this.state.userScore} <br />
+					USER POSITION {this.state.userPosition} <br />
+					SCORE BOARD:
+					<ul className="score-board-container">
+						{this.state.scoreBoard.map((user, index) => {
+							return <li key={index}>{UserElement(user)}</li>;
+						})}
+					</ul>
+				</div>
+
+				<div style={{ position: 'absolute', left: 'auto', right: 0 }}>
+					INSERT KITTEN!
 					<br />
-					<Input
-						label="Kitten name"
-						name="name"
-						value={this.state.kitten.name?.toString()}
-						onChange={data => this.updateData(data)}
-					/>
-					<input type="submit" value="INSERT KITTEN" />
-					<br />
-					{this.state.fileOk != null &&
-						this.state.fileOk &&
-						'UPLOAD OK'}
-					{this.state.fileOk != null &&
-						!this.state.fileOk &&
-						'UPLOAD ERROR'}
-				</form>
-				<br />
-				<br />
-				USER SCORE {this.state.userScore} <br />
-				USER POSITION {this.state.userPosition} <br />
-				SCORE BOARD:
-				<ul className="score-board-container">
-					{this.state.scoreBoard.map((user, index) => {
-						return <li key={index}>{UserElement(user)}</li>;
-					})}
-				</ul>
+					<form
+						encType="multipart/form-data"
+						onSubmit={this.insertNewKitten.bind(this)}>
+						file input:{' '}
+						<input
+							disabled={this.state.upload}
+							type="file"
+							name="image"
+							onChange={this.onFileChange.bind(this)}
+						/>
+						<br />
+						<TextInput
+							disabled={this.state.upload}
+							label="Kitten name"
+							error={this.state.inputError}
+							name="name"
+							value={this.state.kitten.name?.toString()}
+							onChange={data => this.updateData(data)}
+						/>
+						<br />
+						<input type="submit" value="Confirm" />
+						<br />
+						{this.state.fileOk != null &&
+							this.state.fileOk &&
+							'UPLOAD OK'}
+						{this.state.fileOk != null &&
+							!this.state.fileOk &&
+							'UPLOAD ERROR'}
+					</form>
+				</div>
 			</div>
 		);
 	}

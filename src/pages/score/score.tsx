@@ -9,17 +9,19 @@ interface ScoreProps {}
 interface ScoreState {
 	bestKittens: IKitten[];
 	worstKittens: IKitten[];
+	loading: boolean;
 }
 
 export class Score extends React.Component<ScoreProps, ScoreState> {
 	constructor(props) {
 		super(props);
-		this.state = { bestKittens: [], worstKittens: [] };
+		this.state = { bestKittens: [], worstKittens: [], loading: true };
 	}
 
 	async componentDidMount() {
 		await this.loadMostLikedKitten();
 		await this.loadLeastLikedKitten();
+		this.setState({ ...this.state, loading: false });
 	}
 
 	async loadMostLikedKitten() {
@@ -41,29 +43,36 @@ export class Score extends React.Component<ScoreProps, ScoreState> {
 	}
 
 	render() {
+		if (this.state.loading) {
+			return <div>Loading...</div>;
+		} else if (!this.state.bestKittens && !this.state.worstKittens) {
+			return <div>Not enough Kittens to War!. INSERT A KITTEN</div>;
+		}
+
+		const getKitten = (kittens: IKitten[], type: 'best' | 'worst') =>
+			!this.state.loading && kittens && kittens.length > 0 ? (
+				<div
+					style={{
+						alignItems: 'center',
+						textTransform: 'uppercase'
+					}}>
+					{type} KITTEN WITH {kittens[0].votes} VOTES
+					<br />
+					<div className="score-image-container">
+						<ImageDisplay
+							fullUri={`/score/${type}/${kittens[0].savedName}`}></ImageDisplay>
+					</div>
+				</div>
+			) : null;
+
 		return (
-			<div>
-				{this.state.bestKittens && this.state.bestKittens.length > 0 && (
-					<div>
-						BEST KITTEN WITH {this.state.bestKittens[0].votes} VOTES
-						<br />
-						<div className="score-image-container">
-							<ImageDisplay
-								fullUri={`/score/best/${this.state.bestKittens[0].savedName}`}></ImageDisplay>
-						</div>
-					</div>
-				)}
-				{this.state.worstKittens && this.state.worstKittens.length > 0 && (
-					<div>
-						WORST KITTEN WITH {this.state.worstKittens[0].votes}{' '}
-						VOTES
-						<br />
-						<div className="score-image-container">
-							<ImageDisplay
-								fullUri={`/score/worst/${this.state.worstKittens[0].savedName}`}></ImageDisplay>
-						</div>
-					</div>
-				)}
+			<div className="score-container">
+				{!this.state.loading &&
+					!this.state.bestKittens &&
+					!this.state.worstKittens &&
+					'NO KITTENS TO LOAD!'}
+				{getKitten(this.state.bestKittens, 'best')}
+				{getKitten(this.state.worstKittens, 'worst')}
 			</div>
 		);
 	}

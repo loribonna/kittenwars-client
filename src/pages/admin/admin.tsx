@@ -11,6 +11,7 @@ interface AdminProps {}
 
 interface AdminState {
 	kittens: IKitten[];
+	loading: boolean;
 }
 
 function KittenElement(kitten: IKitten) {
@@ -32,11 +33,12 @@ function KittenElement(kitten: IKitten) {
 export class Admin extends React.Component<AdminProps, AdminState> {
 	constructor(props) {
 		super(props);
-		this.state = { kittens: [] };
+		this.state = { kittens: [], loading: true };
 	}
 
 	async componentDidMount() {
 		await this.getPendingImages();
+		this.setState({ ...this.state, loading: false });
 	}
 
 	async getPendingImages() {
@@ -81,16 +83,38 @@ export class Admin extends React.Component<AdminProps, AdminState> {
 	}
 
 	render() {
+		if (this.state.loading) {
+			return <div>Loading data...</div>;
+		}
+
+		if (!this.state.kittens || this.state.kittens.length == 0) {
+			return <div>Nothing to do here!</div>;
+		}
+
 		return (
 			<div>
 				<ul className="admin-kittens-container">
 					{this.state.kittens.map((kitten, index) => {
 						return (
 							<li key={index}>
-								{KittenElement(kitten)}
-								<ImageDisplay
-									key={kitten.savedName}
-									imageID={kitten.savedName}></ImageDisplay>
+								<div
+									style={{
+										overflow: 'hidden',
+										objectFit: 'scale-down',
+										height: '50%'
+									}}>
+									{KittenElement(kitten)}
+									<ImageDisplay
+										style={{
+											maxWidth: '100%',
+											height: 'auto',
+											objectFit: 'scale-down',
+											imageOrientation: 'from-image'
+										}}
+										key={kitten.savedName}
+										imageID={kitten.savedName}
+									/>
+								</div>
 								<button
 									onClick={async () =>
 										await this.evaluateKitten(

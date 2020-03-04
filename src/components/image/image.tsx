@@ -8,6 +8,7 @@ interface ImageDisplayProps {
 	imageID?: string;
 	onClick?: Function;
 	fullUri?: string;
+	style?: React.CSSProperties;
 }
 
 interface ImageDisplayState {
@@ -109,6 +110,7 @@ export class ImageDisplay extends React.Component<
 			<div className="image-container">
 				{
 					<img
+						style={this.props.style}
 						key={this.state.imageID as string}
 						className={this.state.imgClass}
 						src={this.getImg()}
