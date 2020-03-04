@@ -45,7 +45,12 @@ export class Score extends React.Component<ScoreProps, ScoreState> {
 	render() {
 		if (this.state.loading) {
 			return <div>Loading...</div>;
-		} else if (!this.state.bestKittens && !this.state.worstKittens) {
+		} else if (
+			!this.state.bestKittens ||
+			!this.state.worstKittens ||
+			!this.state.bestKittens.length ||
+			!this.state.worstKittens.length
+		) {
 			return <div>Not enough Kittens to War!. INSERT A KITTEN</div>;
 		}
 
