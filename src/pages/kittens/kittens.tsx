@@ -53,6 +53,8 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 						loading: false
 					});
 				}
+			} else {
+				this.setState({ ...this.state, loading: false });
 			}
 		} catch (e) {
 			if (e.status === 401) {
@@ -111,7 +113,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 		return (
 			<div>
 				<div className="kittens-container">
-					<div className="kittens-left">
+					<div className="kittens-image">
 						{this.state.leftKitten && (
 							<ImageDisplay
 								key={this.state.leftKitten.savedName as string}
@@ -121,7 +123,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 								)}></ImageDisplay>
 						)}
 					</div>
-					<div className="kittens-right">
+					<div className="kittens-image">
 						{this.state.rightKitten && (
 							<ImageDisplay
 								key={this.state.rightKitten.savedName as string}

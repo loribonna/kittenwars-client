@@ -1,29 +1,32 @@
 $kittens-background: black;
 
 .kittens {
-
-	@media (min-width: 800px) {
+	@media (min-width: 700px) {
 		&-container {
+			background-color: $kittens-background;
 			display: flex;
 			flex-direction: row;
+			max-width: auto;
+		}
+
+		&-image {
+			display: block;
+			width: auto;
+			height: auto;
+			max-width: 50%;
 		}
 	}
 
-
 	&-container {
-		background-color: $kittens-background;
+		background-color: "transparent";
 		align-items: center;
+		width: 100%;
 	}
 
-	&-right {
+	&-image {
+		align-items: center;
 		display: block;
 		height: 50%;
-		flex: 1;
-	}
-
-	&-left {
-		display: block;
-		height: 50%;
-		flex: 1;
+		width: auto;
 	}
 }
