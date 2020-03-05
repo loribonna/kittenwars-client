@@ -34,8 +34,6 @@
 		"start": "webpack-dev-server --open --config webpack.config.js",
 		"build": "webpack --config webpack.config.js",
 		"build:prod": "webpack --config webpack.config.js --env.production",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
