@@ -92,40 +92,59 @@ export class User extends React.Component<UserProps, UserState> {
 		}
 	}
 
-	async insertNewKitten(event) {
-		event.preventDefault();
-
-		if (!this.state.fileUpl) {
-			return;
-		}
-
+	async checkData(): Promise<boolean> {
 		this.setState({ ...this.state, upload: true, inputError: false });
-		const imageDto = new CreateImageDto(this.state.fileUpl);
-		const kittenDto = new CreateKittenDto(this.state.kitten);
 
 		try {
+			console.log(this.state.kitten);
+			if (!this.state.fileUpl) {
+				throw new Error('File error');
+			}
+
+			const imageDto = new CreateImageDto(this.state.fileUpl);
+			const kittenDto = new CreateKittenDto(this.state.kitten);
+
 			await Promise.all([
 				imageDto.validateOrReject(),
 				kittenDto.validateOrReject()
 			]);
+			return true;
 		} catch (e) {
-			this.setState({ ...this.state, inputError: true, upload: false });
+			console.warn(e);
+			this.setState({
+				...this.state,
+				inputError: true,
+				upload: false,
+				fileUpl: undefined,
+				fileOk: false
+			});
+			return false;
+		}
+	}
+
+	async insertNewKitten(event) {
+		event.preventDefault();
+
+		const valid = await this.checkData();
+		if (!valid) {
+			return;
 		}
 
 		try {
 			const token = getJWTToken();
 
 			const formData = new FormData();
-			formData.append('image', this.state.fileUpl);
+			formData.append('image', this.state.fileUpl as any);
 			formData.append('kitten', JSON.stringify(this.state.kitten));
 
 			await post('/kittens', formData, token);
 			this.setState({
 				...this.state,
 				fileUpl: undefined,
+				inputError: false,
 				fileOk: true,
 				upload: false,
-				kitten:{}
+				kitten: {}
 			});
 		} catch (e) {
 			this.setState({ ...this.state, fileOk: false, upload: false });
