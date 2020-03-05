@@ -58,6 +58,7 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 			if (e.status === 401) {
 				redirectToDefault();
 			}
+			this.setState({ ...this.state, loading: false });
 		}
 	}
 
@@ -103,10 +104,10 @@ export class Kittens extends React.Component<KittensProps, KittensState> {
 	render() {
 		if (this.state.loading) {
 			return <div>Loading Kittens...</div>;
-		}else if(!this.state.leftKitten ||!this.state.rightKitten){
-			return <div>Not enough Kittens to War!. INSERT A KITTEN</div>
+		} else if (!this.state.leftKitten || !this.state.rightKitten) {
+			return <div>Not enough Kittens to War!. INSERT A KITTEN</div>;
 		}
-		
+
 		return (
 			<div>
 				<div className="kittens-container">
