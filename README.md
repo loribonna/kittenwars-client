@@ -1,19 +1,21 @@
 # KITTENWARS
 
-Client web per l'applicativo web e mobile di Kittenwars.
+## Requisiti
+
+-   [Node](https://nodejs.org/)
+
+Server web per l'applicativo web e mobile di Kittenwars.
 
 -   Prima installazione: `npm install`
 -   Compilazione: `npm run build`
 
-L'applicativo usa TypeScript come linguaggio principale e Webpack per compiare il tutto in un unico file `main.js`. 
-I file compilati sono presenti nella cartella `dist`.
-
 Per eseguire l'applicativo, copiare i file dalla cartella `dist` alla cartella `statics` del [server web](https://github.com/loribonna/kittenwars-server).
 
-Test:
+## Note
 
--   `npm run test`
--   La maggior parte dei componenti effettuano operazioni CRUD basiche. L'unico test effettuato si trova in `dto.spec.ts` per verificare il funzionamento dei DTO.
+È possibile visionare l'applicativo all'indirizzo https://kittenwars-awm.herokuapp.com/ grazie all'hosting gratuito di Heroku.
+Dato che è stata usata la versione gratuita si hanno pesanti rallentamenti, per cui è opportuno caricare solo immagini di piccola dimensione.
+L'hosting gratuito di heroku elimina ogni file locale quando, dopo qualche minuto di inattività, entra in modalità sospensione.
 
 ## Traccia concordata
 
