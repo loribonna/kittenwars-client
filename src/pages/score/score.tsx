@@ -57,6 +57,7 @@ export class Score extends React.Component<ScoreProps, ScoreState> {
 		const getKitten = (kittens: IKitten[], type: 'best' | 'worst') =>
 			!this.state.loading && kittens && kittens.length > 0 ? (
 				<div
+					className="score-kitten-container"
 					style={{
 						alignItems: 'center',
 						textTransform: 'uppercase'

@@ -1,6 +1,5 @@
 export const post = async (url: string, body: FormData, JWTtoken?: string) => {
-	let headers: any = {
-	};
+	let headers: any = {};
 	if (JWTtoken) {
 		headers = {
 			...headers,
@@ -84,8 +83,23 @@ export const put = async (url: string, body: Object, JWTtoken?: string) => {
 	});
 };
 
-export const del = async (url: string) => {
-	return fetch(url, { method: 'DELETE' }).then(res => {
+export const del = async (url: string, body: Object, JWTtoken?: string) => {
+	let headers: any = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json'
+	};
+	if (JWTtoken) {
+		headers = {
+			...headers,
+			Authorization: `Bearer ${JWTtoken}`
+		};
+	}
+
+	return fetch(url, {
+		method: 'DELETE',
+		body: body ? JSON.stringify(body) : null,
+		headers: headers
+	}).then(res => {
 		if (!res.ok) {
 			throw { status: res.status };
 		}

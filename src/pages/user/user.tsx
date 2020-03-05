@@ -124,7 +124,8 @@ export class User extends React.Component<UserProps, UserState> {
 				...this.state,
 				fileUpl: undefined,
 				fileOk: true,
-				upload: false
+				upload: false,
+				kitten:{}
 			});
 		} catch (e) {
 			this.setState({ ...this.state, fileOk: false, upload: false });
